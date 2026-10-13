@@ -28,7 +28,7 @@
 *.lai
 *.la
 *.a
-*.lib
+
 
 # Executables
 *.exe
@@ -46,7 +46,6 @@ SymbolTool/x64/
 UnrealDbgProDll/x64/
 UnrealDbgProNative/x64/
 VT_Driver/x64/
-**/x64/
 *.pdb
 *.exp
 *.cer
@@ -84,7 +83,6 @@ ipch/
 
 # Archives — may contain build artifacts or private release packages
 *.rar
-*.zip
 *.7z
 
 # MSVC build intermediates (outside x64/ as well)

@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window size="940,690" mininfo="880,600" caption="0,0,0,44" sizebox="4,4,4,4">
+  <Font id="0" name="Microsoft YaHei UI" size="12" default="true" />
+  <Font id="1" name="Microsoft YaHei UI" size="10" />
+  <Font id="2" name="Microsoft YaHei UI" size="12" bold="true" />
+  <Font id="3" name="Microsoft YaHei UI" size="14" bold="true" />
+  <Font id="4" name="Microsoft YaHei UI" size="16" bold="true" />
+  <Font id="5" name="Microsoft YaHei UI" size="20" bold="true" />
+  <Font id="6" name="Consolas" size="12" />
+  
+  <VerticalLayout name="RootLayout" bkcolor="#FF10141C" bkcolor2="#FF0A0D13">
+    <!-- 标题栏 -->
+    <HorizontalLayout height="44" bkcolor="#FF0C0F16" name="TitleBar">
+      <HorizontalLayout inset="12,0,0,0">
+        <VerticalLayout width="26" height="26" bkcolor="#FF18263D" roundcorner="6,6">
+          <Text text="🛡" font="2" textcolor="#FFB8D3FF" align="center" />
+        </VerticalLayout>
+        <VerticalLayout inset="8,0,0,0">
+          <Text text="虚幻调试器" font="3" textcolor="#FFE9EEF8" />
+          <Text text="VT 调试控制台" font="1" textcolor="#FF6B7689" />
+        </VerticalLayout>
+      </HorizontalLayout>
+      
+      <VerticalLayout width="200" inset="15,6,0,6" bkcolor="#FF0B0F15" bordercolor="#FF222A37" bordersize="1" roundcorner="6,6" name="StatusPill">
+        <HorizontalLayout inset="10,4,12,4">
+          <Text text="⏱" width="12" font="0" textcolor="#FF6B7689" name="StatusIcon" />
+          <Text text="正在启动" font="2" textcolor="#FFE9EEF8" name="StatusText" />
+          <VerticalLayout width="1" bkcolor="#FF2E3849" inset="6,0,6,0" />
+          <Text text="载入后端组件" font="1" textcolor="#FF6B7689" name="StatusDetail" />
+        </HorizontalLayout>
+      </VerticalLayout>
+      
+      <HorizontalLayout>
+        <Button text="📁 运行目录" width="80" textcolor="#FF9BA7BD" hottextcolor="#FFE9EEF8" name="BtnOpenDir" />
+        <Button text="🔄 刷新" width="60" textcolor="#FF9BA7BD" hottextcolor="#FFE9EEF8" name="BtnRefresh" />
+        <Control width="138" />
+      </HorizontalLayout>
+    </HorizontalLayout>
+    
+    <HorizontalLayout name="BodyLayout">
+      <!-- 侧边栏 -->
+      <VerticalLayout width="192" bkcolor="#FF11151D" bordercolor="#FF222A37" bordersize="0,0,1,0" name="Sidebar">
+        <VerticalLayout inset="12,15,12,12">
+          <Text text="控制台" font="1" textcolor="#FF6B7689" height="20" />
+          
+          <VerticalLayout height="34" bkcolor="#FF11151D" roundcorner="8,8" name="Nav0" mouse="true">
+            <HorizontalLayout inset="8,0,8,0">
+              <VerticalLayout width="3" bkcolor="#FF11151D" name="NavBar0" />
+              <Text text="🏠" width="22" textcolor="#FF9BA7BD" name="NavIcon0" />
+              <Text text="总览" textcolor="#FF9BA7BD" name="NavText0" inset="8,0,0,0" />
+            </HorizontalLayout>
+          </VerticalLayout>
+          
+          <VerticalLayout height="34" bkcolor="#FF11151D" roundcorner="8,8" name="Nav1" mouse="true">
+            <HorizontalLayout inset="8,0,8,0">
+              <VerticalLayout width="3" bkcolor="#FF11151D" name="NavBar1" />
+              <Text text="💻" width="22" textcolor="#FF9BA7BD" name="NavIcon1" />
+              <Text text="调试器" textcolor="#FF9BA7BD" name="NavText1" inset="8,0,0,0" />
+            </HorizontalLayout>
+          </VerticalLayout>
+          
+          <VerticalLayout height="34" bkcolor="#FF11151D" roundcorner="8,8" name="Nav2" mouse="true">
+            <HorizontalLayout inset="8,0,8,0">
+              <VerticalLayout width="3" bkcolor="#FF11151D" name="NavBar2" />
+              <Text text="🛡" width="22" textcolor="#FF9BA7BD" name="NavIcon2" />
+              <Text text="防检测对抗" textcolor="#FF9BA7BD" name="NavText2" inset="8,0,0,0" />
+            </HorizontalLayout>
+          </VerticalLayout>
+          
+          <VerticalLayout height="34" bkcolor="#FF11151D" roundcorner="8,8" name="Nav3" mouse="true">
+            <HorizontalLayout inset="8,0,8,0">
+              <VerticalLayout width="3" bkcolor="#FF11151D" name="NavBar3" />
+              <Text text="✓" width="22" textcolor="#FF9BA7BD" name="NavIcon3" />
+              <Text text="诊断与自检" textcolor="#FF9BA7BD" name="NavText3" inset="8,0,0,0" />
+            </HorizontalLayout>
+          </VerticalLayout>
+          
+          <Control height="10" />
+          
+          <Text text="运行环境" font="1" textcolor="#FF6B7689" height="20" />
+          <VerticalLayout bkcolor="#FF10151E" bordercolor="#FF222A37" bordersize="1" roundcorner="8,8" inset="12,12">
+            <VerticalLayout>
+              <HorizontalLayout height="24">
+                <Text text="🛡 权限" width="80" textcolor="#FF9BA7BD" />
+                <Text text="检测中" textcolor="#FF6B7689" name="NavPerm" />
+              </HorizontalLayout>
+              <HorizontalLayout height="24">
+                <Text text="🖥 后端组件" width="80" textcolor="#FF9BA7BD" />
+                <Text text="检测中" textcolor="#FF6B7689" name="NavBackend" />
+              </HorizontalLayout>
+              <HorizontalLayout height="24">
+                <Text text="📌 受控目标" width="80" textcolor="#FF9BA7BD" />
+                <Text text="未配置" textcolor="#FF6B7689" name="NavTarget" />
+              </HorizontalLayout>
+              <HorizontalLayout height="24">
+                <Text text="🔣 符号缓存" width="80" textcolor="#FF9BA7BD" />
+                <Text text="待命" textcolor="#FF6B7689" name="NavSymbol" />
+              </HorizontalLayout>
+              <HorizontalLayout height="24">
+                <Text text="📋 界面日志" width="80" textcolor="#FF9BA7BD" />
+                <Text text="0 条" textcolor="#FF6B7689" name="NavLog" />
+              </HorizontalLayout>
+            </VerticalLayout>
+          </VerticalLayout>
+          
+          <Control height="8" />
+          
+          <VerticalLayout bkcolor="#FF10151E" bordercolor="#FF222A37" bordersize="1" roundcorner="8,8" inset="12,12">
+            <VerticalLayout>
+              <Text text="运行时目录" font="1" textcolor="#FF6B7689" />
+              <Text text="E:\Projects\Driver\UnrealDbgPro\x64\WinUI\Debug" font="6" textcolor="#FF9BA7BD" name="RuntimeDir" />
+              <Text text="管理员权限下运行可获得完整驱动能力" font="1" textcolor="#FF6B7689" />
+            </VerticalLayout>
+          </VerticalLayout>
+        </VerticalLayout>
+      </VerticalLayout>
+      
+      <TabLayout name="PageContainer" bkcolor="#FF10141C">
+        <!-- 总览页 -->
+        <VerticalLayout name="Page0" inset="12,12,12,12">
+          <HorizontalLayout height="80">
+            <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12">
+              <HorizontalLayout height="26">
+                <VerticalLayout width="26" height="26" bkcolor="#FF18263D" roundcorner="6,6">
+                  <Text text="🛡" font="0" textcolor="#FF4C8DFF" align="center" />
+                </VerticalLayout>
+                <Text text="运行状态" font="1" textcolor="#FF9BA7BD" inset="8,0,0,0" />
+              </HorizontalLayout>
+              <Text text="未初始化" font="5" textcolor="#FF4C8DFF" />
+              <Text text="等待进入调试模式" font="1" textcolor="#FF6B7689" />
+            </VerticalLayout>
+            
+            <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" inset="15,0,0,0">
+              <HorizontalLayout height="26">
+                <VerticalLayout width="26" height="26" bkcolor="#FF122536" roundcorner="6,6">
+                  <Text text="💻" font="0" textcolor="#FF63B8FF" align="center" />
+                </VerticalLayout>
+                <Text text="调试器" font="1" textcolor="#FF9BA7BD" inset="8,0,0,0" />
+              </HorizontalLayout>
+              <Text text="0 个" font="5" textcolor="#FF63B8FF" />
+              <Text text="已保存的受控目标" font="1" textcolor="#FF6B7689" />
+            </VerticalLayout>
+            
+            <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" inset="15,0,0,0">
+              <HorizontalLayout height="26">
+                <VerticalLayout width="26" height="26" bkcolor="#FF11291C" roundcorner="6,6">
+                  <Text text="🔣" font="0" textcolor="#FF46D07F" align="center" />
+                </VerticalLayout>
+                <Text text="符号缓存" font="1" textcolor="#FF9BA7BD" inset="8,0,0,0" />
+              </HorizontalLayout>
+              <Text text="待命" font="5" textcolor="#FF46D07F" />
+              <Text text="等待后端上报" font="1" textcolor="#FF6B7689" />
+            </VerticalLayout>
+            
+            <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" inset="15,0,0,0">
+              <HorizontalLayout height="26">
+                <VerticalLayout width="26" height="26" bkcolor="#FF2E2411" roundcorner="6,6">
+                  <Text text="📋" font="0" textcolor="#FFF2B45C" align="center" />
+                </VerticalLayout>
+                <Text text="界面日志" font="1" textcolor="#FF9BA7BD" inset="8,0,0,0" />
+              </HorizontalLayout>
+              <Text text="0 条" font="5" textcolor="#FFF2B45C" />
+              <Text text="" font="1" textcolor="#FF6B7689" />
+            </VerticalLayout>
+          </HorizontalLayout>
+          
+          <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12">
+            <HorizontalLayout height="28">
+              <VerticalLayout width="28" height="28" bkcolor="#FF18263D" roundcorner="8,8">
+                <Text text="🖥" font="2" textcolor="#FF4C8DFF" align="center" />
+              </VerticalLayout>
+              <Text text="系统信息" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+            </HorizontalLayout>
+            
+            <VerticalLayout>
+              <HorizontalLayout height="28">
+                <Text text="系统名称：" width="100" textcolor="#FF9BA7BD" />
+                <Text text="Windows 11" textcolor="#FFE9EEF8" name="SysName" />
+              </HorizontalLayout>
+              <HorizontalLayout height="28">
+                <Text text="内核版本：" width="100" textcolor="#FF9BA7BD" />
+                <Text text="10.0.22621" textcolor="#FFE9EEF8" name="SysKernel" />
+              </HorizontalLayout>
+              <HorizontalLayout height="28">
+                <Text text="处理器：" width="100" textcolor="#FF9BA7BD" />
+                <Text text="Intel Core i7-12700K" textcolor="#FFE9EEF8" name="SysCpu" />
+              </HorizontalLayout>
+              <HorizontalLayout height="28">
+                <Text text="物理内存：" width="100" textcolor="#FF9BA7BD" />
+                <Text text="32 GB" textcolor="#FFE9EEF8" name="SysMemory" />
+              </HorizontalLayout>
+              <HorizontalLayout height="28">
+                <Text text="运行架构：" width="100" textcolor="#FF9BA7BD" />
+                <Text text="x64" textcolor="#FFE9EEF8" name="SysArch" />
+              </HorizontalLayout>
+              <HorizontalLayout height="28">
+                <Text text="符号状态：" width="100" textcolor="#FF9BA7BD" />
+                <Text text="等待后端上报符号准备状态" textcolor="#FFE9EEF8" name="SymbolDetail" />
+              </HorizontalLayout>
+            </VerticalLayout>
+          </VerticalLayout>
+          
+          <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" height="100">
+            <HorizontalLayout height="28">
+              <VerticalLayout width="28" height="28" bkcolor="#FF18263D" roundcorner="8,8">
+                <Text text="▶" font="2" textcolor="#FF4C8DFF" align="center" />
+              </VerticalLayout>
+              <Text text="调试会话" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+              <Button text="进入 VT 调试模式" width="140" height="30" bkcolor="#FF4C8DFF" textcolor="#FFFFFFFF" roundcorner="8,8" name="BtnInitialize" />
+            </HorizontalLayout>
+            <Text text="点击右侧按钮初始化。初始化期间界面保持可用，进度与错误会写入底部日志。" font="1" textcolor="#FF9BA7BD" name="InitState" />
+          </VerticalLayout>
+        </VerticalLayout>
+        
+        <!-- 调试器页 -->
+        <VerticalLayout name="Page1" inset="12,12,12,12">
+          <HorizontalLayout>
+            <VerticalLayout width="500" bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12">
+              <HorizontalLayout height="28">
+                <VerticalLayout width="28" height="28" bkcolor="#FF18263D" roundcorner="8,8">
+                  <Text text="💻" font="2" textcolor="#FF4C8DFF" align="center" />
+                </VerticalLayout>
+                <VerticalLayout inset="12,0,0,0">
+                  <Text text="调试器列表" font="3" textcolor="#FFE9EEF8" />
+                  <Text text="内容保存在 Config\DebuggerList.ini" font="0" textcolor="#FF6B7689" />
+                </VerticalLayout>
+              </HorizontalLayout>
+              
+              <HorizontalLayout height="36">
+                <Button text="添加" width="60" height="30" bkcolor="#FF4C8DFF" textcolor="#FFFFFFFF" roundcorner="8,8" name="BtnAddDebugger" />
+                <Button text="启动" width="60" height="30" bkcolor="#FF10151E" bordercolor="#FF2E3849" bordersize="1" textcolor="#FFE9EEF8" roundcorner="8,8" name="BtnStartDebugger" />
+                <Button text="删除" width="60" height="30" bkcolor="#FF2E141A" bordercolor="#FF222A37" bordersize="1" textcolor="#FFFF6B7D" roundcorner="8,8" name="BtnDeleteDebugger" />
+              </HorizontalLayout>
+              
+              <List name="DebuggerList" bkcolor="#FF10151E" bordercolor="#FF222A37" bordersize="1" roundcorner="8,8" vscrollbar="true" hscrollbar="false">
+                <ListHeader height="0" />
+              </List>
+              
+              <Text text="流程：添加调试器  启动  切到目标窗口锁定前台进程" font="1" textcolor="#FF6B7689" />
+            </VerticalLayout>
+            
+            <VerticalLayout inset="15,0,0,0">
+              <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" height="150">
+                <HorizontalLayout height="28">
+                  <VerticalLayout width="28" height="28" bkcolor="#FF2E2411" roundcorner="8,8">
+                    <Text text="🛡" font="2" textcolor="#FFF2B45C" align="center" />
+                  </VerticalLayout>
+                  <Text text="前台目标" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                </HorizontalLayout>
+                <Button text="锁定当前前台窗口" height="30" bkcolor="#FF10151E" bordercolor="#FF2E3849" bordersize="1" textcolor="#FFE9EEF8" roundcorner="8,8" name="BtnSelectTarget" />
+                <Text text="尚未锁定目标进程。请先切换到目标窗口，再点击上方按钮。" font="1" textcolor="#FF9BA7BD" name="TargetText" />
+              </VerticalLayout>
+              
+              <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" inset="0,15,0,0">
+                <HorizontalLayout height="28">
+                  <VerticalLayout width="28" height="28" bkcolor="#FF18263D" roundcorner="8,8">
+                    <Text text="⏱" font="2" textcolor="#FF4C8DFF" align="center" />
+                  </VerticalLayout>
+                  <Text text="使用流程" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                </HorizontalLayout>
+                
+                <VerticalLayout>
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="1" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="添加调试器" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="选择受控可执行文件，重复路径会被自动忽略" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                  
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="2" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="启动调试器" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="以当前用户身份拉起目标，需要管理员权限" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                  
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="3" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="锁定前台目标" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="锁定后切换到防检测对抗页开启开关" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                </VerticalLayout>
+              </VerticalLayout>
+            </VerticalLayout>
+          </HorizontalLayout>
+        </VerticalLayout>
+        
+        <!-- 防检测对抗页 -->
+        <VerticalLayout name="Page2" inset="12,12,12,12">
+          <HorizontalLayout>
+            <VerticalLayout width="500" bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12">
+              <HorizontalLayout height="28">
+                <VerticalLayout width="28" height="28" bkcolor="#FF18263D" roundcorner="8,8">
+                  <Text text="🛡" font="2" textcolor="#FF4C8DFF" align="center" />
+                </VerticalLayout>
+                <Text text="TL 运行时对抗" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                <VerticalLayout bkcolor="#FF0B0F15" bordercolor="#FF222A37" bordersize="1" roundcorner="6,6" width="80" height="22">
+                  <Text text="全部停用" font="1" textcolor="#FF6B7689" align="center" name="TlSummary" />
+                </VerticalLayout>
+              </HorizontalLayout>
+              
+              <Text text="开关会即时写入 Config\Config.ini" font="1" textcolor="#FF6B7689" />
+              
+              <VerticalLayout>
+                <HorizontalLayout height="40" bkcolor="#FF10151E" roundcorner="6,6" inset="12,8">
+                  <Text text="🛡" width="20" textcolor="#FF4C8DFF" />
+                  <VerticalLayout inset="8,0,0,0">
+                    <Text text="启用定制化对抗" font="2" textcolor="#FFE9EEF8" />
+                    <Text text="总开关。关闭时以下两项不生效。" font="1" textcolor="#FF6B7689" />
+                  </VerticalLayout>
+                  <Option text="" width="50" height="24" bkcolor="#FF222A37" roundcorner="12,12" name="TlEnabled" />
+                </HorizontalLayout>
+                
+                <HorizontalLayout height="40" bkcolor="#FF10151E" roundcorner="6,6" inset="12,8" inset="0,8,0,0">
+                  <Text text="⏱" width="20" textcolor="#FF63B8FF" />
+                  <VerticalLayout inset="8,0,0,0">
+                    <Text text="处理 GetTickCount 检测" font="2" textcolor="#FFE9EEF8" />
+                    <Text text="拦截目标对运行时间的探测，降低时间差检测命中率。" font="1" textcolor="#FF6B7689" />
+                  </VerticalLayout>
+                  <Option text="" width="50" height="24" bkcolor="#FF222A37" roundcorner="12,12" name="TlGetTick" />
+                </HorizontalLayout>
+                
+                <HorizontalLayout height="40" bkcolor="#FF10151E" roundcorner="6,6" inset="12,8" inset="0,8,0,0">
+                  <Text text="💻" width="20" textcolor="#FFF2B45C" />
+                  <VerticalLayout inset="8,0,0,0">
+                    <Text text="阻止游戏恢复线程" font="2" textcolor="#FFE9EEF8" />
+                    <Text text="阻止目标重新恢复被挂起的线程，保持调试暂停状态。" font="1" textcolor="#FF6B7689" />
+                  </VerticalLayout>
+                  <Option text="" width="50" height="24" bkcolor="#FF222A37" roundcorner="12,12" name="TlBlockResume" />
+                </HorizontalLayout>
+              </VerticalLayout>
+              
+              <Text text="当前未启用任何对抗项。" font="1" textcolor="#FF9BA7BD" name="TlStateText" />
+            </VerticalLayout>
+            
+            <VerticalLayout inset="15,0,0,0">
+              <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12">
+                <HorizontalLayout height="28">
+                  <VerticalLayout width="28" height="28" bkcolor="#FF18263D" roundcorner="8,8">
+                    <Text text="⏱" font="2" textcolor="#FF4C8DFF" align="center" />
+                  </VerticalLayout>
+                  <Text text="推荐步骤" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                </HorizontalLayout>
+                <Text text="基于目标版本的固定偏移，需按序验证" font="1" textcolor="#FF6B7689" />
+                
+                <VerticalLayout>
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="1" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="锁定目标" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="在调试器页确认目标已锁定且在运行" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                  
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="2" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="开启总开关" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="先启用定制化对抗，再逐项打开子开关" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                  
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="3" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="观察日志" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="切换开关后立刻关注底部日志中的偏移匹配结果" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                  
+                  <HorizontalLayout height="30">
+                    <VerticalLayout width="23" height="23" bkcolor="#FF18263D" roundcorner="11,11">
+                      <Text text="4" font="0" textcolor="#FFB8D3FF" align="center" />
+                    </VerticalLayout>
+                    <VerticalLayout inset="12,0,0,0">
+                      <Text text="回退验证" font="2" textcolor="#FFE9EEF8" />
+                      <Text text="缺少命中记录时关闭对应开关，避免影响目标稳定性" font="1" textcolor="#FF6B7689" />
+                    </VerticalLayout>
+                  </HorizontalLayout>
+                </VerticalLayout>
+                
+                <HorizontalLayout bkcolor="#FF2E2411" bordercolor="#FFF2B45C" bordersize="1" roundcorner="8,8" inset="12,12" height="50">
+                  <Text text="⚠" width="20" textcolor="#FFF2B45C" />
+                  <Text text="对抗逻辑依赖目标版本与固定偏移，目标更新后可能失效；失效时请先关闭全部开关并保留日志。" font="1" textcolor="#FFF2B45C" inset="8,0,0,0" />
+                </HorizontalLayout>
+              </VerticalLayout>
+            </VerticalLayout>
+          </HorizontalLayout>
+        </VerticalLayout>
+        
+        <!-- 诊断与自检页 -->
+        <VerticalLayout name="Page3" inset="12,12,12,12">
+          <HorizontalLayout>
+            <VerticalLayout width="500" bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12">
+              <HorizontalLayout height="28">
+                <VerticalLayout width="28" height="28" bkcolor="#FF11291C" roundcorner="8,8">
+                  <Text text="✓" font="2" textcolor="#FF46D07F" align="center" />
+                </VerticalLayout>
+                <Text text="运行时依赖" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                <Button text="重新检查" width="80" height="28" bkcolor="transparent" textcolor="#FF9BA7BD" roundcorner="6,6" name="BtnRecheck" />
+              </HorizontalLayout>
+              
+              <Text text="按当前运行目录实时检查" font="1" textcolor="#FF6B7689" />
+              <Text text="尚未检查" font="2" textcolor="#FF9BA7BD" name="DiagnosticsSummary" />
+              
+              <VerticalLayout name="DiagnosticsList"></VerticalLayout>
+            </VerticalLayout>
+            
+            <VerticalLayout inset="15,0,0,0">
+              <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" height="200">
+                <HorizontalLayout height="28">
+                  <VerticalLayout width="28" height="28" bkcolor="#FF2E2411" roundcorner="8,8">
+                    <Text text="📋" font="2" textcolor="#FFF2B45C" align="center" />
+                  </VerticalLayout>
+                  <Text text="日志与会话" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                </HorizontalLayout>
+                <Text text="日志同时写入磁盘，清空界面不影响文件" font="1" textcolor="#FF6B7689" />
+                
+                <Button text="打开日志目录" height="30" bkcolor="#FF10151E" bordercolor="#FF2E3849" bordersize="1" textcolor="#FFE9EEF8" roundcorner="8,8" name="BtnOpenLog" />
+                
+                <HorizontalLayout height="24">
+                  <Text text="界面日志条数：" width="100" textcolor="#FF9BA7BD" />
+                  <Text text="0 条" textcolor="#FFE9EEF8" name="LogCount" />
+                </HorizontalLayout>
+              </VerticalLayout>
+              
+              <VerticalLayout bkcolor="#FF161B25" bordercolor="#FF222A37" bordersize="1" roundcorner="13,13" inset="12,12" inset="0,15,0,0">
+                <HorizontalLayout height="28">
+                  <VerticalLayout width="28" height="28" bkcolor="#FF122536" roundcorner="8,8">
+                    <Text text="🔣" font="2" textcolor="#FF63B8FF" align="center" />
+                  </VerticalLayout>
+                  <Text text="界面冒烟自检" font="3" textcolor="#FFE9EEF8" inset="12,0,0,0" />
+                </HorizontalLayout>
+                <Text text="覆盖导航、日志筛选、面板拖拽与依赖检查" font="1" textcolor="#FF6B7689" />
+                
+                <Button text="运行界面自检" height="30" bkcolor="#FF10151E" bordercolor="#FF2E3849" bordersize="1" textcolor="#FFE9EEF8" roundcorner="8,8" name="BtnSmokeTest" />
+                <Text text="在界面内执行一组只读检查，结果写入日志面板。" font="1" textcolor="#FF9BA7BD" />
+                <Text text="尚未运行自检。" font="1" textcolor="#FF6B7689" name="SmokeResult" />
+              </VerticalLayout>
+            </VerticalLayout>
+          </HorizontalLayout>
+        </VerticalLayout>
+      </TabLayout>
+    </HorizontalLayout>
+    
+    <HorizontalLayout height="5" bkcolor="#FF10141C" bordercolor="#FF222A37" bordersize="0,1,0,1" name="DragHandle" mouse="true">
+      <VerticalLayout width="46" height="4" bkcolor="#FF2E3849" roundcorner="2,2" align="center" />
+    </HorizontalLayout>
+    
+    <VerticalLayout height="190" name="LogPanel" bkcolor="#FF0C0F16">
+      <HorizontalLayout height="34" bkcolor="#FF11151D" bordercolor="#FF222A37" bordersize="0,0,0,1">
+        <Button text=" 折叠" width="70" textcolor="#FF9BA7BD" name="BtnFold" />
+        <Combo name="LogFilter" width="80" textcolor="#FF9BA7BD">
+          <ListLabel text="全部" />
+          <ListLabel text="信息" />
+          <ListLabel text="调试" />
+          <ListLabel text="错误" />
+        </Combo>
+        <Button text="跟随" width="50" textcolor="#FF9BA7BD" name="BtnFollow" />
+        <Button text="复制" width="50" textcolor="#FF9BA7BD" name="BtnCopy" />
+        <Button text="清空" width="50" textcolor="#FF9BA7BD" name="BtnClear" />
+        <Text text="0 条" textcolor="#FF6B7689" name="LogCountText" />
+      </HorizontalLayout>
+      
+      <List name="LogList" vscrollbar="true" hscrollbar="false" bkcolor="#FF0C0F16">
+        <ListHeader height="0" />
+      </List>
+    </VerticalLayout>
+  </VerticalLayout>
+</Window>
