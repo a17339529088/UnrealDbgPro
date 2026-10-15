@@ -344,7 +344,7 @@ namespace
 
 
 //连接驱动
-HANDLE CreateDeviceHandle(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
+HANDLE CreateDeviceHandle(const std::wstring DriveImagePath, const std::wstring ServiceName)
 {
     logger.outDebug(L"连接驱动设备：服务=%ls 驱动=%ls", ServiceName.c_str(), DriveImagePath.c_str());
 
@@ -419,7 +419,7 @@ HANDLE CreateDeviceHandle(const wchar_t* DriveImagePath, const wchar_t* ServiceN
 }
 
 //加载VT驱动
-BOOL LoadVT(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
+BOOL LoadVT(const std::wstring DriveImagePath, const std::wstring ServiceName)
 {
     logger.outDebug(L"加载 VT 驱动：服务=%ls 路径=%ls", ServiceName.c_str(), DriveImagePath.c_str());
     if (!ValidateServiceIdentity(DriveImagePath, ServiceName, L"VT 核心"))
@@ -473,7 +473,7 @@ BOOL LoadVT(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
 }
 
 //常规驱动加载
-BOOL LoadGeneralDriver(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
+BOOL LoadGeneralDriver(const std::wstring DriveImagePath, const std::wstring ServiceName)
 {
     g_hGeneralDriverDevice = CreateDeviceHandle(DriveImagePath, ServiceName);
     if (g_hGeneralDriverDevice == INVALID_HANDLE_VALUE)
