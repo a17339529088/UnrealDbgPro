@@ -9,7 +9,7 @@ from pathlib import Path
 
 # 对齐 GitHub 虚拟机及本地环境的通用拓扑路径
 BASE_DIR = Path(__file__).resolve().parent
-SANDBOX_CORE = BASE_DIR / "VmxBenchSandbox" / "Core"
+SANDBOX_CORE = BASE_DIR / ".deps" / "sandbox_core"
 UNREAL_DRIVER = BASE_DIR / "UnrealDbgPro" / "VT_Driver"
 
 def execute_merge():
