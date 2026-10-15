@@ -189,6 +189,12 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemGroup>
+  <!-- LINK expands %_PDB%; double-percent escaping applies to BAT, not XML. -->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <Link>
+      <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

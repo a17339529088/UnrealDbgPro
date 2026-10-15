@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 # WinUI 3 的 C++ 投影和 Windows App SDK 包不放进 Git；脚本把它们恢复到
 # _artifacts，项目文件会从那里生成投影头和链接。重复执行是安全的。
@@ -27,8 +28,18 @@ foreach ($package in $packages) {
     }
     $destination = Join-Path $packageRoot $package.Folder
     if (-not (Test-Path -LiteralPath $destination)) {
-        New-Item -ItemType Directory -Force -Path $destination | Out-Null
-        Expand-Archive -LiteralPath $archive -DestinationPath $destination -Force
+        # Windows PowerShell 5.1 Expand-Archive rejects the .nupkg extension.
+        # Extract into a temporary directory so a failed extraction is not
+        # mistaken for a restored package on the next invocation.
+        $temporary = "$destination.extract-$([guid]::NewGuid().ToString('N'))"
+        try {
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($archive, $temporary)
+            Move-Item -LiteralPath $temporary -Destination $destination
+        } finally {
+            if (Test-Path -LiteralPath $temporary) {
+                Remove-Item -LiteralPath $temporary -Recurse -Force
+            }
+        }
     }
 }
 
