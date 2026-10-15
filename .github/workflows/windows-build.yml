@@ -1,0 +1,56 @@
+name: Windows Release x64
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md']
+permissions:
+  contents: read
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+      - name: Install Windows Driver Kit
+        run: |
+          choco install windowsdriverkit10 --yes --no-progress --limit-output
+          if ($LASTEXITCODE -notin @(0,3010)) { throw "WDK installation failed: $LASTEXITCODE" }
+      - name: Restore WinUI packages
+        run: ./UnrealDbgProNative/RestoreWinUiPackages.ps1
+      - name: Build and test runtime libraries
+        run: ./RuntimeDependencies/Build-RuntimeDependencies.ps1 -Configuration Release
+      - name: Build GUI and driver references
+        run: |
+          New-Item -ItemType Directory -Force _artifacts/ci-logs | Out-Null
+          msbuild UnrealDbgProNative/UnrealDbgProNativeWinUI.vcxproj /t:Build /p:Configuration=Release /p:Platform=x64 /m /v:minimal /bl:_artifacts/ci-logs/gui-release.binlog
+          if ($LASTEXITCODE -ne 0) { throw "MSBuild failed: $LASTEXITCODE" }
+          if (-not (Test-Path x64/WinUI/Release/UnrealDbgProNativeWinUI.exe)) { throw 'GUI executable missing' }
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build-logs
+          path: _artifacts/ci-logs/
+          if-no-files-found: ignore
+      - name: Upload runtime libraries
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-x64
+          path: |
+            x64/WinUI/Release/*.exe
+            x64/WinUI/Release/*.dll
+            x64/WinUI/Release/bin/*.dll
+            x64/WinUI/Release/bin/*.sys
+            x64/Release/bin/AIHelper.dll
+            x64/Release/bin/D-encryption.dll
+            x64/Release/bin/TestRuntime.exe
+          if-no-files-found: error
