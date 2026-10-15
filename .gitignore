@@ -94,3 +94,5 @@ ipch/
 
 # Private release / restricted assets — kept out by the **/x64/ rule above.
 # Do NOT add narrow exceptions here: anything under x64/ must stay untracked.
+# Source-built runtime dependency intermediates
+RuntimeDependencies/**/x64/

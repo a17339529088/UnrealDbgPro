@@ -1,0 +1,4 @@
+LIBRARY "D-encryption"
+EXPORTS
+    EncryptDataToFile @1
+    DecryptDataFromFile @2

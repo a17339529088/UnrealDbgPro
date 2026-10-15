@@ -81,7 +81,15 @@ void InjectDll_0(DWORD dwPid, TCHAR* DLLPathName, BOOL is64Process)
 	logger.LogW(L"[INFO] 正在注入 DLL：pid=%lu 路径=%ls is64=%d", dwPid, DLLPathName, is64Process);
 	try
 	{
+		SetLastError(ERROR_SUCCESS);
 		AI_InjectDll(dwPid, DLLPathName, is64Process);
+		const DWORD injectionError = GetLastError();
+		if (injectionError != ERROR_SUCCESS)
+		{
+			logger.LogError("AIHelper.dll!InjectDll 返回失败", injectionError);
+			SetLastError(injectionError);
+			return;
+		}
 		logger.Log("[DEBUG] InjectDll 调用已返回");
 	}
 	catch (const std::exception& ex)

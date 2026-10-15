@@ -283,15 +283,17 @@ powershell -ExecutionPolicy Bypass -File UnrealDbgProNative\RestoreWinUiPackages
 
 > 也可直接运行 `构建并验证GUI.bat` 完成构建与验证。
 
-### 手动部署 DLL
+### 运行依赖构建
 
-以下三个 DLL 不在解决方案的自动构建流程中，需要手动复制到编译产出目录（`x64\Release\bin\` 或 `x64\WinUI\Release\bin\`）：
+`AIHelper.dll` 和 `D-encryption.dll` 现提供源码替代实现，已接入 WinUI 项目的构建与复制流程。也可以单独构建并运行不加载驱动的依赖测试：
 
-| 文件 | 来源 | 说明 |
-|------|------|------|
-| `AIHelper.dll` | 根目录 | AI 辅助模块 DLL，直接从项目根目录复制到 `bin` 目录 |
-| `D-encryption.dll` | `D-encryption` 项目编译产物 | 文件加密模块，源自**大师 UnrealDbg 4.2 泄露版源码**中的 `D-encryption` Delphi 项目。需单独编译 `D-encryption\D-encryption.dproj`，将生成的 `D-encryption.dll` 复制到 `bin` 目录 |
-| `VMProtectSDK64.dll` | `Common\VMProtect\` | VMProtect 代码保护 SDK，直接从 `Common\VMProtect\VMProtectSDK64.dll` 复制到 `bin` 目录 |
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File RuntimeDependencies\Build-RuntimeDependencies.ps1
+```
+
+输出位于 `x64\Release\bin`。新 `AIHelper.dll` 使用 C ABI 的 `LoadNTW` / `UnloadNTW`，必须与本次更新后的后端一起构建部署。普通 x64 Debug/Release 使用无 VMProtect 保护的开发模式，无需 `VMProtectSDK64.dll`。
+
+实现边界、历史密文兼容性及验证状态详见 [运行依赖说明](RuntimeDependencies/README.md)。
 
 ---
 

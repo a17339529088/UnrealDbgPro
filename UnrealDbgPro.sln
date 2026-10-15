@@ -19,6 +19,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnrealDbgProNative", "Unrea
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnrealDbgProNativeWinUI", "UnrealDbgProNative\UnrealDbgProNativeWinUI.vcxproj", "{7B4A7F9C-5989-4C57-AF4A-5B2A06BD2E18}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIHelper", "RuntimeDependencies\AIHelper\AIHelper.vcxproj", "{BA9A35B7-8B96-436E-A65E-76A573871D30}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Encryption", "RuntimeDependencies\Encryption\Encryption.vcxproj", "{711E16EE-4DDD-4544-BCDF-343F07F94987}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,6 +37,36 @@ Global
 		Win7 Debug|x86 = Win7 Debug|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Debug|x64.ActiveCfg = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Debug|x64.Build.0 = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Debug|x86.ActiveCfg = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Release|x64.ActiveCfg = Release|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Release|x64.Build.0 = Release|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Release|x86.ActiveCfg = Release|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win10 Debug|x64.ActiveCfg = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win10 Debug|x64.Build.0 = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win10 Debug|x86.ActiveCfg = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win10 Release|x64.ActiveCfg = Release|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win10 Release|x64.Build.0 = Release|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win10 Release|x86.ActiveCfg = Release|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win7 Debug|x64.ActiveCfg = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win7 Debug|x64.Build.0 = Debug|x64
+		{BA9A35B7-8B96-436E-A65E-76A573871D30}.Win7 Debug|x86.ActiveCfg = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Debug|x64.ActiveCfg = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Debug|x64.Build.0 = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Debug|x86.ActiveCfg = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Release|x64.ActiveCfg = Release|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Release|x64.Build.0 = Release|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Release|x86.ActiveCfg = Release|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win10 Debug|x64.ActiveCfg = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win10 Debug|x64.Build.0 = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win10 Debug|x86.ActiveCfg = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win10 Release|x64.ActiveCfg = Release|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win10 Release|x64.Build.0 = Release|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win10 Release|x86.ActiveCfg = Release|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win7 Debug|x64.ActiveCfg = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win7 Debug|x64.Build.0 = Debug|x64
+		{711E16EE-4DDD-4544-BCDF-343F07F94987}.Win7 Debug|x86.ActiveCfg = Debug|x64
 		{FC047E85-1CAF-4668-A4A2-E3F7501C8BEA}.Debug|x64.ActiveCfg = Debug|x64
 		{FC047E85-1CAF-4668-A4A2-E3F7501C8BEA}.Debug|x64.Build.0 = Debug|x64
 		{FC047E85-1CAF-4668-A4A2-E3F7501C8BEA}.Debug|x86.ActiveCfg = Debug|Win32

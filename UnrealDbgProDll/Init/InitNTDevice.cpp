@@ -3,9 +3,9 @@
 
 
 //加载NT驱动
-typedef BOOL(__stdcall* PFN_LOADNT)(const std::wstring DriveImagePath, const std::wstring ServiceName);
+typedef BOOL(__stdcall* PFN_LOADNT)(const wchar_t* DriveImagePath, const wchar_t* ServiceName);
 //卸载NT驱动
-typedef BOOL(__stdcall* PFN_UNLOADNT)(const std::wstring ServiceName);
+typedef BOOL(__stdcall* PFN_UNLOADNT)(const wchar_t* ServiceName);
 
 typedef int(__stdcall* PFN_OUTDEBUG)(const TCHAR* _Format, ...);
 
@@ -317,7 +317,7 @@ namespace
         logger.LogW(L"检测到已停止的旧服务 %ls（错误码=%lu），正在清理后按当前路径重新注册：%ls",
             serviceName.c_str(), static_cast<unsigned long>(originalError), driverPath.c_str());
         SetLastError(ERROR_SUCCESS);
-        if (!pfnUnloadNT(serviceName))
+        if (!pfnUnloadNT(serviceName.c_str()))
         {
             const DWORD unloadLastError = GetLastError();
             const DWORD unloadError = unloadLastError == ERROR_SUCCESS ? ERROR_GEN_FAILURE : unloadLastError;
@@ -328,7 +328,7 @@ namespace
 
         logger.LogW(L"旧服务 %ls 已清理，正在重新调用 LoadNT", serviceName.c_str());
         SetLastError(ERROR_SUCCESS);
-        if (pfnLoadNT(driverPath, serviceName))
+        if (pfnLoadNT(driverPath.c_str(), serviceName.c_str()))
         {
             logger.LogW(L"服务 %ls 已按当前驱动路径重新注册并启动", serviceName.c_str());
             return true;
@@ -344,7 +344,7 @@ namespace
 
 
 //连接驱动
-HANDLE CreateDeviceHandle(const std::wstring DriveImagePath, const std::wstring ServiceName)
+HANDLE CreateDeviceHandle(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
 {
     logger.outDebug(L"连接驱动设备：服务=%ls 驱动=%ls", ServiceName.c_str(), DriveImagePath.c_str());
 
@@ -374,7 +374,7 @@ HANDLE CreateDeviceHandle(const std::wstring DriveImagePath, const std::wstring 
 
     const bool serviceWasRunning = WasServiceRunning(ServiceName);
     logger.outDebug(L"设备未连接，开始加载服务 %ls", ServiceName.c_str());
-    if (!pfnLoadNT(DriveImagePath, ServiceName))
+    if (!pfnLoadNT(DriveImagePath.c_str(), ServiceName.c_str()))
     {
         // AIHelper returns ERROR_SERVICE_EXISTS when a previous run already
         // registered the service. This is only benign when that service is
@@ -419,7 +419,7 @@ HANDLE CreateDeviceHandle(const std::wstring DriveImagePath, const std::wstring 
 }
 
 //加载VT驱动
-BOOL LoadVT(const std::wstring DriveImagePath, const std::wstring ServiceName)
+BOOL LoadVT(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
 {
     logger.outDebug(L"加载 VT 驱动：服务=%ls 路径=%ls", ServiceName.c_str(), DriveImagePath.c_str());
     if (!ValidateServiceIdentity(DriveImagePath, ServiceName, L"VT 核心"))
@@ -434,7 +434,7 @@ BOOL LoadVT(const std::wstring DriveImagePath, const std::wstring ServiceName)
     }
 
     const bool serviceWasRunning = WasServiceRunning(ServiceName);
-    if (!pfnLoadNT(DriveImagePath, ServiceName))
+    if (!pfnLoadNT(DriveImagePath.c_str(), ServiceName.c_str()))
     {
         // Reusing a service that is already running is safe and avoids the
         // misleading intermediate ERROR_SERVICE_EXISTS (183). A stopped
@@ -473,7 +473,7 @@ BOOL LoadVT(const std::wstring DriveImagePath, const std::wstring ServiceName)
 }
 
 //常规驱动加载
-BOOL LoadGeneralDriver(const std::wstring DriveImagePath, const std::wstring ServiceName)
+BOOL LoadGeneralDriver(const wchar_t* DriveImagePath, const wchar_t* ServiceName)
 {
     g_hGeneralDriverDevice = CreateDeviceHandle(DriveImagePath, ServiceName);
     if (g_hGeneralDriverDevice == INVALID_HANDLE_VALUE)
@@ -591,8 +591,8 @@ BOOL InitInterface()
         logger.LogError("加载 AIHelper.dll：LoadLibraryW", GetLastError());
         return FALSE;
     }
-    pfnLoadNT = (PFN_LOADNT)GetProcAddress(AIHelperMod, "LoadNT");
-    pfnUnloadNT = (PFN_UNLOADNT)GetProcAddress(AIHelperMod, "UnloadNT");
+    pfnLoadNT = (PFN_LOADNT)GetProcAddress(AIHelperMod, "LoadNTW");
+    pfnUnloadNT = (PFN_UNLOADNT)GetProcAddress(AIHelperMod, "UnloadNTW");
     outDebug = (PFN_OUTDEBUG)GetProcAddress(AIHelperMod, "outDebug");
     if (pfnLoadNT == nullptr || pfnUnloadNT == nullptr || outDebug == nullptr)
     {

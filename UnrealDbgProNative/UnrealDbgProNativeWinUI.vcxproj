@@ -136,6 +136,18 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RuntimeDependencies\AIHelper\AIHelper.vcxproj">
+      <Project>{BA9A35B7-8B96-436E-A65E-76A573871D30}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <ProjectReference Include="..\RuntimeDependencies\Encryption\Encryption.vcxproj">
+      <Project>{711E16EE-4DDD-4544-BCDF-343F07F94987}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemGroup>
   <Target Name="CopyWinUIBootstrap" AfterTargets="Build">
     <Copy SourceFiles="$(WindowsAppSDKPackageDir)runtimes\win-x64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
     <MakeDir Directories="$(OutDir)bin" />
@@ -150,10 +162,7 @@
       <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\UnrealDbgProDll\x64\$(Configuration)\UnrealDbgProDll.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\UnrealDbgProDll\x64\$(Configuration)\UnrealDbgProDll.dll')">
         <DestinationFile>$(OutDir)bin\UnrealDbgProDll.dll</DestinationFile>
       </RuntimeDependency>
-      <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\D-encryptiondll\x64\$(Configuration)\D-encryption.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\D-encryptiondll\x64\$(Configuration)\D-encryption.dll')">
-        <DestinationFile>$(OutDir)bin\D-encryption.dll</DestinationFile>
-      </RuntimeDependency>
-      <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\D-encryptiondll\D-encryption\x64\$(Configuration)\D-encryption.dll" Condition="!Exists('$(MSBuildThisFileDirectory)..\D-encryptiondll\x64\$(Configuration)\D-encryption.dll') and Exists('$(MSBuildThisFileDirectory)..\D-encryptiondll\D-encryption\x64\$(Configuration)\D-encryption.dll')">
+      <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\D-encryption.dll">
         <DestinationFile>$(OutDir)bin\D-encryption.dll</DestinationFile>
       </RuntimeDependency>
       <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\Hook\x64\$(Configuration)\Hook64.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\Hook\x64\$(Configuration)\Hook64.dll')">
@@ -168,10 +177,7 @@
       <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\VT_Driver\x64\$(Configuration)\VT_Driver.sys" Condition="Exists('$(MSBuildThisFileDirectory)..\VT_Driver\x64\$(Configuration)\VT_Driver.sys')">
         <DestinationFile>$(OutDir)bin\VT_Driver.sys</DestinationFile>
       </RuntimeDependency>
-      <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\AIHelper.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\AIHelper.dll')">
-        <DestinationFile>$(OutDir)bin\AIHelper.dll</DestinationFile>
-      </RuntimeDependency>
-      <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\x64\Release\bin\AIHelper.dll" Condition="!Exists('$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\AIHelper.dll') and Exists('$(MSBuildThisFileDirectory)..\x64\Release\bin\AIHelper.dll')">
+      <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\AIHelper.dll">
         <DestinationFile>$(OutDir)bin\AIHelper.dll</DestinationFile>
       </RuntimeDependency>
       <RuntimeDependency Include="$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\VMProtectSDK64.dll" Condition="Exists('$(MSBuildThisFileDirectory)..\x64\$(Configuration)\bin\VMProtectSDK64.dll')">
