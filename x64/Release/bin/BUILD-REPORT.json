@@ -1,0 +1,66 @@
+{
+  "compiler": "x86_64-w64-mingw32-g++ (GCC) 15.2.0",
+  "target": "Windows x64",
+  "windows_runtime_tests": "not run; macOS host",
+  "required_backend": "Rebuild UnrealDbgProDll using LoadNTW/UnloadNTW; not a replacement for unchanged legacy backend",
+  "artifacts": {
+    "AIHelper.dll": {
+      "sha256": "ccb4373913ba8ecfb7f4c33983dadb311495be921c59a6319130021956c0b72c",
+      "imports": [
+        "ADVAPI32.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll"
+      ],
+      "exports_checked": [
+        "LoadNTW",
+        "UnloadNTW",
+        "outDebug",
+        "InjectDll"
+      ]
+    },
+    "D-encryption.dll": {
+      "sha256": "b537c1d986a77cc69504a1311616a5201cf7fddb7f26d3b5c9d424e6975bc6df",
+      "imports": [
+        "ADVAPI32.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll"
+      ],
+      "exports_checked": [
+        "EncryptDataToFile",
+        "DecryptDataFromFile"
+      ]
+    },
+    "TestRuntime.exe": {
+      "sha256": "72f5cb8eb20cb265f4d908572236fd70a07a5b1c7f4265903d9975039e80f7d9",
+      "imports": [
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-filesystem-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll"
+      ],
+      "exports_checked": []
+    }
+  }
+}
