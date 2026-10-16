@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Timing.h"
+#include "Timing.h"
 #include <atomic>
 extern "C" uint64_t VbsReadSerializedTsc();
 namespace vbs { namespace timing {

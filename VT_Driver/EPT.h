@@ -1,7 +1,7 @@
 #pragma once
 #include <stddef.h>
 #include <stdint.h>
-#include "Shared/ProtocolV1.h"
+#include "ProtocolV1.h"
 
 namespace vbs { namespace ept {
 constexpr uint64_t PageMask = ~uint64_t(0xfff);
