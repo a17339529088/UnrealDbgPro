@@ -5,6 +5,82 @@
 #include "EPT.h"
 #include "VbsEpt.h"
 #include "VmxTiming.h"
+
+namespace {
+bool VbsIsOwner(void* context)
+{
+	return context != nullptr && reinterpret_cast<__vcpu*>(_readfsbase_u64()) == context;
+}
+
+bool VbsReadVmcs(void*, uint64_t field, uint64_t* value)
+{
+	if (!value) return false;
+	size_t result = 0;
+	if (__vmx_vmread(static_cast<size_t>(field), &result) != 0) return false;
+	*value = static_cast<uint64_t>(result);
+	return true;
+}
+
+bool VbsWriteVmcs(void*, uint64_t field, uint64_t value)
+{
+	return __vmx_vmwrite(static_cast<size_t>(field), static_cast<size_t>(value)) == 0;
+}
+
+uint64_t VbsCompareExchange(void*, volatile uint64_t* target,
+	uint64_t expected, uint64_t desired)
+{
+	return static_cast<uint64_t>(InterlockedCompareExchange64(
+		reinterpret_cast<volatile LONG64*>(target),
+		static_cast<LONG64>(desired), static_cast<LONG64>(expected)));
+}
+
+bool VbsInvalidate(void*, uint64_t type, uint64_t eptp)
+{
+	if (type != 1) return false;
+	invept_single_context_func(eptp);
+	return true;
+}
+
+uint64_t VbsReadTsc(void*) { return __rdtsc(); }
+
+bool PrepareVbsEpt(__vcpu* vcpu)
+{
+	if (vcpu->s_vcpu.state == vbs::ept::State::Armed ||
+		vcpu->s_vcpu.state == vbs::ept::State::Window) return true;
+	if (vcpu->s_vcpu.state == vbs::ept::State::Failed || !vcpu->ept_state) return false;
+
+	vbs::ept::Page pages[vbs::ept::MaxPages]{};
+	size_t count = 0;
+	PLIST_ENTRY head = &vcpu->ept_state->hooked_page_list;
+	for (PLIST_ENTRY entry = head->Flink; entry != head && count < vbs::ept::MaxPages;
+		entry = entry->Flink) {
+		auto* hooked = CONTAINING_RECORD(entry, __ept_hooked_page_info, hooked_page_list);
+		if (!hooked->entry_address || hooked->Options != EPTO_VIRTUAL_BREAKPOINT) continue;
+		pages[count++] = {
+			hooked->pfn_of_hooked_page << PAGE_SHIFT,
+			reinterpret_cast<volatile uint64_t*>(&hooked->entry_address->all),
+			hooked->entry_address->all
+		};
+	}
+	if (!count) return false;
+
+	vbs::ept::Operations ops{};
+	ops.context = vcpu;
+	ops.is_owner = VbsIsOwner;
+	ops.read_vmcs = VbsReadVmcs;
+	ops.write_vmcs = VbsWriteVmcs;
+	ops.compare_exchange = VbsCompareExchange;
+	ops.invept = VbsInvalidate;
+	ops.read_tsc = VbsReadTsc;
+	vbs::ept::Capabilities caps{};
+	caps.primary_may_be_one = vbs::ept::Mtf;
+	caps.ept_verified = true;
+	caps.invept_single_context = true;
+	return vbs::ept::Initialize(vcpu->s_vcpu, ops, caps,
+		vcpu->ept_state->ept_pointer->all, 1, 0,
+		static_cast<uint16_t>(KeGetCurrentProcessorNumber()), pages, count);
+}
+}
 #include "vmexit_handler.h"
 #include "hypervisor_routines.h"
 #include "vmcs.h"
@@ -221,10 +297,26 @@ void dispatch_vm_exit(__vcpu* vcpu)
 	case VMX_EXIT_REASON_EXECUTE_VMXON:                vmexit_vmx_on_handler(vcpu);               break;
 	case VMX_EXIT_REASON_EXECUTE_VMCALL:               vmexit_vmcall_handler(vcpu);              break;
 	case VMX_EXIT_REASON_VMX_PREEMPTION_TIMER_EXPIRED: vmexit_vmx_preemption_handler(vcpu);       break;
-	case VMX_EXIT_REASON_EPT_VIOLATION:                vbs::ept::HandleEptViolation(vcpu->s_vcpu);        break;
+	case VMX_EXIT_REASON_EPT_VIOLATION:
+		if (!PrepareVbsEpt(vcpu)) {
+			vmexit_ept_violation_handler(vcpu);
+		} else {
+			const auto result = vbs::ept::HandleEptViolation(vcpu->s_vcpu);
+			if (result != vbs::ept::Result::RetryInstruction)
+				vmexit_ept_violation_handler(vcpu);
+		}
+		break;
 	case VMX_EXIT_REASON_EXECUTE_RDTSC:                vmexit_rdtsc_handler(vcpu);               break;
 	case VMX_EXIT_REASON_EXECUTE_RDTSCP:               vmexit_rdtscp_handler(vcpu);              break;
-	case VMX_EXIT_REASON_MONITOR_TRAP_FLAG:            vbs::ept::HandleMonitorTrapFlag(vcpu->s_vcpu);    break;
+	case VMX_EXIT_REASON_MONITOR_TRAP_FLAG:
+		if (vcpu->s_vcpu.state == vbs::ept::State::Uninitialized) {
+			vmexit_monitor_trap_flag_handler(vcpu);
+		} else {
+			const auto result = vbs::ept::HandleMonitorTrapFlag(vcpu->s_vcpu);
+			if (result != vbs::ept::Result::Rearmed)
+				vmexit_monitor_trap_flag_handler(vcpu);
+		}
+		break;
 	case VMX_EXIT_REASON_EPT_MISCONFIGURATION:         vmexit_ept_misconfiguration_handler(vcpu); break;
 	case VMX_EXIT_REASON_EXECUTE_VMCLEAR:
 	case VMX_EXIT_REASON_EXECUTE_VMLAUNCH:

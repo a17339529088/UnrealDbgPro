@@ -70,7 +70,8 @@ struct Vcpu {
     bool owns_mtf = false;
 };
 
-/** Initialize a fresh, quiescent context. Pages must already be armed R--, 4K,
+/** Initialize a fresh, quiescent context. Pages must already deny at least one
+ * monitored access while retaining at least one permission, and must be 4K,
  * unique in this context, resident and private to this vCPU. Verifies current
  * VMCS EPTP/MTF and flushes locally before admitting use. Does not allocate EPT.
  */

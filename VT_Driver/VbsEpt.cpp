@@ -46,7 +46,8 @@ bool SetPermissions(Vcpu& c, Page& p, uint64_t permissions) noexcept {
 bool Restore(Vcpu& c) noexcept {
     bool ok = true;
     for (size_t i = 0; i < c.pending_count; ++i)
-        if (!SetPermissions(c, *c.pending[i].page, ReadOnly)) ok = false;
+        if (!SetPermissions(c, *c.pending[i].page,
+                            c.pending[i].page->armed_entry & Permissions)) ok = false;
     if (c.pending_count && !InvalidateLocal(c)) ok = false;
     if (c.owns_mtf) {
         uint64_t controls = 0;
@@ -101,7 +102,8 @@ bool Initialize(Vcpu& c, const Operations& ops, const Capabilities& caps,
     for (size_t i = 0; i < count; ++i) {
         if ((pages[i].gpa & ~PageMask) || !pages[i].leaf ||
             (reinterpret_cast<uintptr_t>(pages[i].leaf) & 7) ||
-            (pages[i].armed_entry & Permissions) != ReadOnly) return false;
+            !(pages[i].armed_entry & Permissions) ||
+            (pages[i].armed_entry & Permissions) == Permissions) return false;
         const uint64_t entry = ops.compare_exchange(ops.context, pages[i].leaf, 0, 0);
         if ((entry & ~HardwareAd) != (pages[i].armed_entry & ~HardwareAd)) return false;
         for (size_t j = 0; j < i; ++j)
