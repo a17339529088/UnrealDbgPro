@@ -27,10 +27,11 @@ extern "C" __declspec(dllexport) BOOL __stdcall LoadNTW(
     if (!manager.value) return FALSE;
     // Existing services are handled and identity-checked by InitNTDevice.cpp.
     // Never start/reconfigure an existing service here.
-    const std::wstring quotedPath = std::wstring(L"\"") + imagePath + L"\"";
+    // Kernel-driver ImagePath is a filename, not a user-mode command line.
+    // Keep the validated path intact rather than adding literal quote characters.
     ServiceHandle service{CreateServiceW(manager.value, serviceName, serviceName,
         SERVICE_START | DELETE, SERVICE_KERNEL_DRIVER, SERVICE_DEMAND_START,
-        SERVICE_ERROR_NORMAL, quotedPath.c_str(), nullptr, nullptr, nullptr, nullptr, nullptr)};
+        SERVICE_ERROR_NORMAL, imagePath, nullptr, nullptr, nullptr, nullptr, nullptr)};
     if (!service.value) {
         if (GetLastError() == ERROR_SERVICE_EXISTS) SetLastError(ERROR_ALREADY_EXISTS);
         return FALSE;
