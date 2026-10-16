@@ -52,6 +52,9 @@
     <ClCompile Include="EPT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VbsEpt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="vmcs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

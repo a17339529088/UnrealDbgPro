@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "mtrr.h"
 #include "EPT.h"
+#include "VbsEpt.h"
 #include "VmxTiming.h"
 #include "vmexit_handler.h"
 #include "hypervisor_routines.h"

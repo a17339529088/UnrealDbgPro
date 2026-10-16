@@ -4,6 +4,7 @@
 #define _GLOBALS_H
 
 #include "EPT.h"
+#include "VbsEpt.h"
 
 
 //16位md5哈希摘要

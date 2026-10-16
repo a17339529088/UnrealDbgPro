@@ -182,6 +182,7 @@
     <ClCompile Include="..\Common\Ring0\String\StringHandler.cpp" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="EPT.cpp" />
+    <ClCompile Include="VbsEpt.cpp" />
     <ClCompile Include="gdt.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Log.cpp" />
