@@ -302,7 +302,8 @@ void adjust_rip(__vcpu* vcpu);
 
 void skip_instruction();
 
-void dispatch_vm_exit(__vcpu* vcpu);
+/** Returns true when a sticky sandbox failure requires VMX termination. */
+bool dispatch_vm_exit(__vcpu* vcpu);
 
 //恢复guest状态
 void RestoreGuest();

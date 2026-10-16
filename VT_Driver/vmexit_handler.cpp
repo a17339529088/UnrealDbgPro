@@ -255,7 +255,8 @@ bool vmexit_handler(guest_context* guest_registers, PFXSAVE64 fxsave)
 	//
 	//采用函数棒的设计无法满足设计需求
 	//换做switch，这样可以将未来未收录的reason放到default里进行处理
-	dispatch_vm_exit(vcpu);
+	if (dispatch_vm_exit(vcpu))
+		vcpu->vmx_off_state.vmx_off_executed = true;
 	
 	if (vcpu->vmx_off_state.vmx_off_executed == true)
 	{
@@ -265,6 +266,16 @@ bool vmexit_handler(guest_context* guest_registers, PFXSAVE64 fxsave)
 
 		//如果要停止虚拟化，vmexit_handler 将返回 true
 		return true;
+	}
+
+	if (vcpu->s_vcpu.state != vbs::ept::State::Uninitialized) {
+		const bool injecting_event =
+			(hv::vmread(VM_ENTRY_INTERRUPTION_INFO_FIELD) & (uint64_t(1) << 31)) != 0;
+		if (!vbs::ept::CanResume(vcpu->s_vcpu, injecting_event)) {
+			vcpu->vcpu_status.vmm_launched = false;
+			RestoreGuest();
+			return true;
+		}
 	}
 
 	vbs::timing::Stamp begin_stamp = { vcpu->exit_tsc, 0, 0 };
@@ -278,8 +289,14 @@ bool vmexit_handler(guest_context* guest_registers, PFXSAVE64 fxsave)
 	return false;
 }
 
-void dispatch_vm_exit(__vcpu* vcpu)
+bool dispatch_vm_exit(__vcpu* vcpu)
 {
+	const bool sandbox_exit = vcpu->vmexit_info.reason == VMX_EXIT_REASON_EPT_VIOLATION ||
+		vcpu->vmexit_info.reason == VMX_EXIT_REASON_MONITOR_TRAP_FLAG;
+	if (!sandbox_exit && vcpu->s_vcpu.state == vbs::ept::State::Window &&
+		vbs::ept::CloseWindowBeforeOtherExit(vcpu->s_vcpu) == vbs::ept::Result::StopSession)
+		return true;
+
 	switch (vcpu->vmexit_info.reason)
 	{
 	case VMX_EXIT_REASON_EXCEPTION_OR_NMI:             vmexit_exception_or_nmi_handler(vcpu);     break;
@@ -302,7 +319,9 @@ void dispatch_vm_exit(__vcpu* vcpu)
 			vmexit_ept_violation_handler(vcpu);
 		} else {
 			const auto result = vbs::ept::HandleEptViolation(vcpu->s_vcpu);
-			if (result != vbs::ept::Result::RetryInstruction)
+			if (result == vbs::ept::Result::StopSession)
+				return true;
+			if (result == vbs::ept::Result::NotHandled)
 				vmexit_ept_violation_handler(vcpu);
 		}
 		break;
@@ -313,7 +332,9 @@ void dispatch_vm_exit(__vcpu* vcpu)
 			vmexit_monitor_trap_flag_handler(vcpu);
 		} else {
 			const auto result = vbs::ept::HandleMonitorTrapFlag(vcpu->s_vcpu);
-			if (result != vbs::ept::Result::Rearmed)
+			if (result == vbs::ept::Result::StopSession)
+				return true;
+			if (result == vbs::ept::Result::NotHandled)
 				vmexit_monitor_trap_flag_handler(vcpu);
 		}
 		break;
@@ -338,6 +359,7 @@ void dispatch_vm_exit(__vcpu* vcpu)
 		break;
 	}
 	}
+	return false;
 }
 
 
