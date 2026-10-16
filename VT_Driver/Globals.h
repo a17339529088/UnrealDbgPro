@@ -1,7 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #ifndef _GLOBALS_H
 #define _GLOBALS_H
+
+#include "EPT.h"
 
 
 //16位md5哈希摘要
@@ -892,6 +894,7 @@ struct __vcpu
 
     bool hide_vm_exit_overhead;
     uint64_t tsc_offset;
+    uint64_t exit_tsc;
 
     // the overhead caused by world-transitions
     uint64_t vm_exit_tsc_overhead;
@@ -963,6 +966,8 @@ struct __vcpu
 
     CLIENT_ID Cid; //记录触发监视断点的guest的线程id
     unsigned __int64 breakpoint_detected; //记录触发的地址
+
+    vbs::ept::Vcpu s_vcpu;
 };
 
 struct __mtrr_info

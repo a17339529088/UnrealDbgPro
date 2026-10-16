@@ -1,4 +1,4 @@
-﻿#include "Driver.h"
+#include "Driver.h"
 #include "poolmanager.h"
 #include "Globals.h"
 #include "vmcall_handler.h"
@@ -8,6 +8,7 @@
 #include "msr.h"
 #include "mtrr.h"
 #include "EPT.h"
+#include "VmxTiming.h"
 #include "AsmCallset.h"
 #include "hypervisor_routines.h"
 #include "vmexit_handler.h"
@@ -238,18 +239,33 @@ void vmexit_vmcall_handler(__vcpu* vcpu)
 	case VMCALL_WATCH_WRITES:
 	{
 		status = SetBreakpoint((PVT_BREAK_POINT)vmcall_parameter1, EPTW_WRITE);
+		{
+			VT_BREAK_POINT tmp_bp = { 0 };
+			hv::read_guest_virtual_memory((PVT_BREAK_POINT)vmcall_parameter1, &tmp_bp, sizeof(VT_BREAK_POINT));
+			vcpu->s_vcpu.pages[0].gpa = tmp_bp.PhysicalAddress;
+		}
 		adjust_rip(vcpu);
 		break;
 	}
 	case VMCALL_WATCH_READS:
 	{
 		status = SetBreakpoint((PVT_BREAK_POINT)vmcall_parameter1, EPTW_READWRITE);
+		{
+			VT_BREAK_POINT tmp_bp = { 0 };
+			hv::read_guest_virtual_memory((PVT_BREAK_POINT)vmcall_parameter1, &tmp_bp, sizeof(VT_BREAK_POINT));
+			vcpu->s_vcpu.pages[0].gpa = tmp_bp.PhysicalAddress;
+		}
 		adjust_rip(vcpu);
 		break;
 	}
 	case VMCALL_WATCH_EXECUTES:
 	{
 		status = SetBreakpoint((PVT_BREAK_POINT)vmcall_parameter1, EPTW_EXECUTE);
+		{
+			VT_BREAK_POINT tmp_bp = { 0 };
+			hv::read_guest_virtual_memory((PVT_BREAK_POINT)vmcall_parameter1, &tmp_bp, sizeof(VT_BREAK_POINT));
+			vcpu->s_vcpu.pages[0].gpa = tmp_bp.PhysicalAddress;
+		}
 		adjust_rip(vcpu);
 		break;
 	}

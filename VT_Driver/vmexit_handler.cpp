@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "mtrr.h"
 #include "EPT.h"
+#include "VmxTiming.h"
 #include "vmexit_handler.h"
 #include "hypervisor_routines.h"
 #include "vmcs.h"
@@ -160,6 +161,7 @@ bool vmexit_handler(guest_context* guest_registers, PFXSAVE64 fxsave)
 	//从fs_base里取出vcpu的指针
 	//因为在填充host_vmcs字段HOST_FS_BASE时保存的
 	__vcpu* vcpu = reinterpret_cast<__vcpu*>(_readfsbase_u64());
+	vcpu->exit_tsc = __rdtsc();
 
 	guest_registers->rsp = hv::vmread(GUEST_RSP);
 
@@ -188,7 +190,10 @@ bool vmexit_handler(guest_context* guest_registers, PFXSAVE64 fxsave)
 		return true;
 	}
 
-	vbs::timing::Measure(vcpu);
+	vbs::timing::Stamp begin_stamp = { vcpu->exit_tsc, 0, 0 };
+	vbs::timing::Stamp end_stamp = { __rdtsc(), 0, 0 };
+	vbs::timing::HardwareEstimate hw_est = { 200, 400, 300, 50 };
+	vbs::timing::Measure(begin_stamp, end_stamp, &hw_est);
 
 	//hv::vmwrite(TSC_OFFSET, vcpu->tsc_offset);
 	//hv::vmwrite(GUEST_VMX_PREEMPTION_TIMER_VALUE, vcpu->preemption_timer);
