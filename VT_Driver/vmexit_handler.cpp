@@ -1,4 +1,4 @@
-﻿#include "Driver.h"
+#include "Driver.h"
 #include "poolmanager.h"
 #include "Globals.h"
 #include "mtrr.h"
@@ -188,7 +188,7 @@ bool vmexit_handler(guest_context* guest_registers, PFXSAVE64 fxsave)
 		return true;
 	}
 
-	//hide_vm_exit_overhead(vcpu);
+	vbs::timing::Measure(vcpu);
 
 	//hv::vmwrite(TSC_OFFSET, vcpu->tsc_offset);
 	//hv::vmwrite(GUEST_VMX_PREEMPTION_TIMER_VALUE, vcpu->preemption_timer);
@@ -215,10 +215,10 @@ void dispatch_vm_exit(__vcpu* vcpu)
 	case VMX_EXIT_REASON_EXECUTE_VMXON:                vmexit_vmx_on_handler(vcpu);               break;
 	case VMX_EXIT_REASON_EXECUTE_VMCALL:               vmexit_vmcall_handler(vcpu);              break;
 	case VMX_EXIT_REASON_VMX_PREEMPTION_TIMER_EXPIRED: vmexit_vmx_preemption_handler(vcpu);       break;
-	case VMX_EXIT_REASON_EPT_VIOLATION:                vmexit_ept_violation_handler(vcpu);        break;
+	case VMX_EXIT_REASON_EPT_VIOLATION:                vbs::ept::HandleEptViolation(vcpu->s_vcpu);        break;
 	case VMX_EXIT_REASON_EXECUTE_RDTSC:                vmexit_rdtsc_handler(vcpu);               break;
 	case VMX_EXIT_REASON_EXECUTE_RDTSCP:               vmexit_rdtscp_handler(vcpu);              break;
-	case VMX_EXIT_REASON_MONITOR_TRAP_FLAG:            vmexit_monitor_trap_flag_handler(vcpu);    break;
+	case VMX_EXIT_REASON_MONITOR_TRAP_FLAG:            vbs::ept::HandleMonitorTrapFlag(vcpu->s_vcpu);    break;
 	case VMX_EXIT_REASON_EPT_MISCONFIGURATION:         vmexit_ept_misconfiguration_handler(vcpu); break;
 	case VMX_EXIT_REASON_EXECUTE_VMCLEAR:
 	case VMX_EXIT_REASON_EXECUTE_VMLAUNCH:
